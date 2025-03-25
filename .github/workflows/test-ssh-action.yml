@@ -13,6 +13,7 @@ jobs:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USERNAME }}
         key: ${{ secrets.REMOTE_SSH_KEY }}
+        port: ${{ secrets.PORT }}
         script: |
           # Docker Swarm Stack Deploy
           echo "Hello, World!"
