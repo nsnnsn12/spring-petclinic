@@ -56,11 +56,12 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
       - name: SSH to Remote Server and Deploy Stack
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/deploy-for-petclinic
             gh repo sync
