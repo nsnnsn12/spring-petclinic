@@ -63,4 +63,4 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
             cd deploy-for-petclinic/swarm
-            docker stack deploy -c stack.yml ${{APPLICATION_NAME}}
+            docker stack deploy -c stack.yml ${{ env.APPLICATION_NAME}}
