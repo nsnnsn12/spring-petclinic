@@ -36,7 +36,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5.7.0
         with:
-          images: ${{ DOCKER_IMAGE }}
+          images: ${{ env.DOCKER_IMAGE }}
 
       - name: Build and push Docker image
         id: push
@@ -45,13 +45,13 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ DOCKER_IMAGE }}:develop
-          cache-from: type=registry,ref=${{ DOCKER_IMAGE }}:cache
-          cache-to: type=registry,ref=${{ DOCKER_IMAGE }}:cache,mode=max
+          tags: ${{ env.DOCKER_IMAGE }}:develop
+          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:cache
+          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE }}:cache,mode=max
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: index.docker.io/${{ DOCKER_IMAGE }}
+          subject-name: index.docker.io/${{ env.DOCKER_IMAGE }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
