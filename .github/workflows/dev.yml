@@ -61,6 +61,4 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          script: |
-            cd deploy-for-petclinic/swarm
-            docker stack deploy -c stack.yml ${{ env.APPLICATION_NAME}}
+          script: cd ~/deploy-for-petclinic/swarm && docker stack deploy --detach=true  --with-registry-auth -c stack.yml ${{ env.APPLICATION_NAME}}
