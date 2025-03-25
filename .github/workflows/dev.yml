@@ -65,4 +65,5 @@ jobs:
           script: |
             cd ~/deploy-for-petclinic
             gh repo sync
+            docker login
             docker stack deploy --with-registry-auth -c ./swarm/stack-dev.yml ${{ env.APPLICATION_NAME}}
