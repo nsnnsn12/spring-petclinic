@@ -1,13 +1,13 @@
-# container image 빌드와 푸시
-
 name: Publish Docker image For Develop
 
 on:
   push:
     branches: [ develop ]
 env:
-  APPLICATION_NAME: spring-pet-clinic
-  DOCKER_IMAGE: sunggyu496/spring-pet-clinic
+  APPLICATION_NAME: spring-pet-clinic # 스택 이름
+  DOCKER_IMAGE: sunggyu496/spring-pet-clinic # Docker Hub에 푸시할 이미지 이름
+  REPOSITORY_FOR_DEPLOYMENT: deploy-for-petclinic # swarm stack 파일을 관리하는 레포지토리
+  DEPLOYENT_FILE_PATH: ./swarm/stack-dev.yml # stack.yml 파일의 경로
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -63,7 +63,8 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ~/deploy-for-petclinic
+            [ ! -d "~/${{ env.REPOSITORY_FOR_DEPLOYMENT }}" ] && gh repo clone ${{ env.REPOSITORY_FOR_DEPLOYMENT }}
+            cd ~/${{ env.REPOSITORY_FOR_DEPLOYMENT }}
             gh repo sync
             docker login
-            docker stack deploy --with-registry-auth -c ./swarm/stack-dev.yml ${{ env.APPLICATION_NAME}}
+            docker stack deploy --with-registry-auth -c ${{env.DEPLOYENT_FILE_PATH}} ${{ env.APPLICATION_NAME}}
